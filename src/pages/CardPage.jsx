@@ -1,4 +1,4 @@
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate, Link } from 'react-router-dom'
 import ProgressBar from '../components/ProgressBar'
 
 const CardPage = () => {
@@ -52,6 +52,16 @@ const CardPage = () => {
             <p className="text-2xl font-bold text-orange-500">{10 - state.checkCount}</p>
             <p className="text-xs text-gray-400">visite{10 - state.checkCount > 1 ? 's' : ''} pour un repas gratuit</p>
           </div>
+        </div>
+
+        {/* 👤 Lien vers le profil fidélité */}
+        <div className="text-center mt-4">
+          <Link
+            to="/profile"
+            className="text-orange-500 text-sm font-medium hover:underline transition-all"
+          >
+            Voir tout mon profil fidélité →
+          </Link>
         </div>
 
         <p className="text-center text-gray-300 text-xs mt-6">FidApp • Votre fidélité récompensée</p>
