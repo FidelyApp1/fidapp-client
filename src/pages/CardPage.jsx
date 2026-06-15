@@ -40,6 +40,8 @@ const CardPage = () => {
   }
 
   const isReward = !!state.reward
+  // Définition d'une constante locale pour éviter la répétition de la valeur par défaut
+  const totalRequired = state.checksRequired || 10
 
   return (
     <div className={`min-h-screen flex flex-col items-center justify-center px-6 transition-all duration-500 ${
@@ -109,12 +111,14 @@ const CardPage = () => {
 
           {!isReward && (
             <>
-              <ProgressBar current={state.checkCount} total={10} />
+              {/* 📊 Remplacement du total par la variable dynamique */}
+              <ProgressBar current={state.checkCount} total={totalRequired} />
+              
               <div className="mt-6 bg-orange-50 rounded-2xl p-4 text-center">
                 <p className="text-xs text-gray-400">Encore</p>
-                <p className="text-3xl font-bold text-orange-500">{10 - state.checkCount}</p>
+                <p className="text-3xl font-bold text-orange-500">{totalRequired - state.checkCount}</p>
                 <p className="text-xs text-gray-400">
-                  visite{10 - state.checkCount > 1 ? 's' : ''} pour un repas gratuit 🎁
+                  visite{(totalRequired - state.checkCount) > 1 ? 's' : ''} pour un repas gratuit 🎁
                 </p>
               </div>
             </>
@@ -127,7 +131,8 @@ const CardPage = () => {
               <p className="text-sm text-gray-500">Présentez cet écran à la caisse pour obtenir votre repas gratuit</p>
               <div className="mt-4 bg-white rounded-xl p-3 border border-orange-200">
                 <p className="text-xs text-gray-400">Compteur remis à zéro</p>
-                <p className="text-lg font-bold text-orange-500">0/10 visites</p>
+                {/* 🔄 Remplacement dynamique du total également dans le badge de récompense */}
+                <p className="text-lg font-bold text-orange-500">0/{totalRequired} visites</p>
               </div>
             </div>
           )}
