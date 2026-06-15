@@ -20,7 +20,13 @@ const ScanPage = () => {
       const data = await checkin(phone, qrCode)
       navigate('/card', { state: data })
     } catch (err) {
-      setError('Erreur — vérifiez votre numéro ou le QR code')
+      // 🛡️ Gestion de l'erreur anti-fraude du backend
+      const msg = err.response?.data?.message
+      if (err.response?.data?.error === 'anti_fraud') {
+        setError(msg)
+      } else {
+        setError('Erreur — vérifiez votre numéro ou le QR code')
+      }
     } finally {
       setLoading(false)
     }
@@ -54,7 +60,9 @@ const ScanPage = () => {
           </div>
 
           {error && (
-            <p className="text-red-400 text-sm mb-4 text-center">{error}</p>
+            <p className="text-red-400 text-sm mb-4 text-center font-medium bg-red-50 p-3 rounded-xl border border-red-100">
+              {error}
+            </p>
           )}
 
           <button
