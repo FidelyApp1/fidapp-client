@@ -17,20 +17,16 @@ const LandingPage = () => {
     setLoading(true)
     setError('')
     try {
-      // 🔍 On stocke la réponse du serveur EmailJS
-      const response = await emailjs.send(
+      await emailjs.send(
         'service_kd7iwdc',
         'template_cxs4mbl',
-        form
+        form // Seuls ces 3 arguments suffisent maintenant !
       )
-      
-      // 🚨 Affiche le résultat dans la console de ton navigateur (F12)
-      console.log("SUCCÈS EMAILJS !", response.status, response.text)
       setSent(true)
     } catch (err) {
-      console.error("ERREUR EMAILJS DÉTAILLÉE :", err)
+      console.error(err)
       setError('Erreur envoi — réessayez')
-    } finally {
+    }finally {
       setLoading(false)
     }
   }
