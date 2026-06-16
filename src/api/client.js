@@ -5,13 +5,14 @@ const api = axios.create({
   headers: { 'Content-Type': 'application/json' }
 })
 
-export const checkin = async (phone, qrCode) => {
-  const res = await api.post('/checkin', { phone, qrCode })
+export const checkin = async (phone, qrCode, name) => {
+  const res = await api.post('/checkin', { phone, qrCode, name })
   return res.data
 }
 export const getClientProfile = async (phone) => {
   const res = await api.get(`/client/profile/${phone}`)
   return res.data
 }
+
 
 export default api

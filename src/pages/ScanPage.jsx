@@ -6,21 +6,31 @@ const ScanPage = () => {
   const { qrCode } = useParams()
   const navigate = useNavigate()
   const [phone, setPhone] = useState('')
+  const [name, setName] = useState('') // 👤 Nouvel état pour le prénom du client
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
   const handleSubmit = async () => {
+    // Validation du numéro de téléphone
     if (phone.length < 9) {
       setError('Entrez un numéro valide')
       return
     }
+    
+    // Validation optionnelle du prénom (évite les soumissions vides ou purement d'espaces)
+    if (!name.trim()) {
+      setError('Veuillez entrer votre prénom')
+      return
+    }
+
     setLoading(true)
     setError('')
     try {
-      const data = await checkin(phone, qrCode)
+      // Transmission du prénom au backend pour l'inscription/mise à jour du client
+      const data = await checkin(phone, qrCode, name.trim())
       navigate('/card', { state: data })
     } catch (err) {
-      // 🛡️ Gestion de l'erreur anti-fraude du backend
+      // 🛡️ Gestion de l'erreur anti-fraude ou expiration du backend
       const msg = err.response?.data?.message
       if (err.response?.data?.error === 'anti_fraud') {
         setError(msg)
@@ -46,9 +56,22 @@ const ScanPage = () => {
 
         <div className="bg-white rounded-3xl shadow-xl p-8">
           <h2 className="text-lg font-semibold text-gray-700 mb-1">Bienvenue !</h2>
-          <p className="text-gray-400 text-sm mb-6">Entrez votre numéro pour valider votre visite</p>
+          <p className="text-gray-400 text-sm mb-6">Entrez vos informations pour valider votre visite</p>
 
+          {/* Champ Prénom */}
           <div className="mb-4">
+            <label className="text-xs font-medium text-gray-500 uppercase tracking-wide">Prénom</label>
+            <input
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="Mohammed"
+              className="w-full mt-2 px-4 py-4 border-2 border-gray-100 rounded-2xl text-lg font-medium focus:outline-none focus:border-orange-400 transition-colors"
+            />
+          </div>
+
+          {/* Champ Téléphone */}
+          <div className="mb-6">
             <label className="text-xs font-medium text-gray-500 uppercase tracking-wide">Numéro de téléphone</label>
             <input
               type="tel"
