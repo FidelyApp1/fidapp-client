@@ -20,14 +20,13 @@ const LandingPage = () => {
       await emailjs.send(
         'service_kd7iwdc',
         'template_cxs4mbl',
-        form,
-        'ZaEscAr4yUeJaRox7'
+        form // Seuls ces 3 arguments suffisent maintenant !
       )
       setSent(true)
     } catch (err) {
       console.error(err)
       setError('Erreur envoi — réessayez')
-    } finally {
+    }finally {
       setLoading(false)
     }
   }
