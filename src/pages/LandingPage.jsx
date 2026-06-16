@@ -9,27 +9,31 @@ const LandingPage = () => {
 
   const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value })
 
-  const handleSubmit = async () => {
-    if (!form.restaurant_name || !form.phone || !form.city) {
-      setError('Nom, téléphone et ville sont obligatoires')
-      return
-    }
-    setLoading(true)
-    setError('')
-    try {
-      await emailjs.send(
-        'service_kd7iwdc',
-        'template_cxs4mbl',
-        form // Seuls ces 3 arguments suffisent maintenant !
-      )
-      setSent(true)
-    } catch (err) {
-      console.error(err)
-      setError('Erreur envoi — réessayez')
-    }finally {
-      setLoading(false)
-    }
+const handleSubmit = async () => {
+  if (!form.restaurant_name || !form.phone || !form.city) {
+    setError('Nom, téléphone et ville sont obligatoires')
+    return
   }
+  setLoading(true)
+  setError('')
+  try {
+    // 🔍 On stocke la réponse du serveur EmailJS
+    const response = await emailjs.send(
+      'service_kd7iwdc',
+      'template_cxs4mbl',
+      form
+    )
+    
+    // 🚨 Affiche le résultat dans la console de ton navigateur (F12)
+    console.log("SUCCÈS EMAILJS !", response.status, response.text)
+    setSent(true)
+  } catch (err) {
+    console.error("ERREUR EMAILJS DÉTAILLÉE :", err)
+    setError('Erreur envoi — réessayez')
+  } finally {
+    setLoading(false)
+  }
+}
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-orange-50 to-white">
