@@ -76,7 +76,7 @@ const CardPage = () => {
           <div className="text-center mb-8">
             <div className="relative inline-block">
               <div className="w-28 h-28 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full flex items-center justify-center mx-auto mb-4 shadow-2xl">
-                <span className="text-6xl">🏆</span>
+                <span className="text-6xl">{state.rewardEmoji || '🏆'}</span>
               </div>
               <div className="absolute -top-2 -right-2 w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
                 <span className="text-white text-sm font-bold">✓</span>
@@ -84,7 +84,7 @@ const CardPage = () => {
             </div>
             <h1 className="text-3xl font-bold text-gray-800 mb-2">Félicitations !</h1>
             <div className="bg-orange-500 text-white font-semibold px-6 py-3 rounded-2xl inline-block mb-2">
-              🎁 {state.reward}
+              {state.rewardEmoji || '🎁'} {state.reward}
             </div>
             <p className="text-gray-400 text-sm mt-2">Montrez cet écran au comptoir</p>
           </div>
@@ -118,7 +118,7 @@ const CardPage = () => {
                 <p className="text-xs text-gray-400">Encore</p>
                 <p className="text-3xl font-bold text-orange-500">{totalRequired - state.checkCount}</p>
                 <p className="text-xs text-gray-400">
-                  visite{(totalRequired - state.checkCount) > 1 ? 's' : ''} pour un repas gratuit 🎁
+                  visite{(totalRequired - state.checkCount) > 1 ? 's' : ''} pour {state.rewardTitle || 'une récompense'} {state.rewardEmoji || '🎁'}
                 </p>
               </div>
             </>
@@ -126,12 +126,13 @@ const CardPage = () => {
 
           {isReward && (
             <div className="bg-gradient-to-br from-orange-50 to-yellow-50 rounded-2xl p-6 text-center border-2 border-orange-200">
-              <p className="text-4xl mb-3">🎊</p>
+              <p className="text-4xl mb-3">{state.rewardEmoji || '🎊'}</p>
               <p className="font-bold text-gray-800 mb-1">Votre récompense est prête !</p>
-              <p className="text-sm text-gray-500">Présentez cet écran à la caisse pour obtenir votre repas gratuit</p>
+              <p className="text-sm text-gray-500">
+                {state.rewardDesc || 'Présentez cet écran à la caisse pour obtenir votre repas gratuit'}
+              </p>
               <div className="mt-4 bg-white rounded-xl p-3 border border-orange-200">
                 <p className="text-xs text-gray-400">Compteur remis à zéro</p>
-                {/* 🔄 Remplacement dynamique du total également dans le badge de récompense */}
                 <p className="text-lg font-bold text-orange-500">0/{totalRequired} visites</p>
               </div>
             </div>
