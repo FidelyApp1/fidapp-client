@@ -27,11 +27,13 @@ const ScanPage = () => {
       const data = await checkin(phone, qrCode, name.trim())
       navigate('/card', { state: data })
     } catch (err) {
-      const msg = err.response?.data?.message
-      if (err.response?.data?.error === 'anti_fraud') {
-        setError(msg)
+      // 🛠️ FIX : Récupération dynamique du message personnalisé configuré dans ton backend
+      const backendMessage = err.response?.data?.message
+      
+      if (backendMessage) {
+        setError(backendMessage) // Affiche "Ce QR code a déjà été validé..." ou "Vous avez déjà validé une visite..."
       } else {
-        setError('Ce lien a expiré ou est invalide. Veuillez re-scanner le QR Code au comptoir.')
+        setError('Une erreur réseau est survenue. Veuillez re-scanner le QR Code au comptoir.')
       }
     } finally {
       setLoading(false)
@@ -91,10 +93,11 @@ const ScanPage = () => {
             </div>
           )}
 
+          {/* 🛠️ OPTIMISATION : Ajout de styles disabled pour bloquer visuellement les clics multiples */}
           <button
             onClick={handleSubmit}
             disabled={loading}
-            className="w-full bg-gray-900 hover:bg-gray-800 text-white font-bold py-4 rounded-xl transition-all shadow-lg active:scale-[0.97] text-sm mt-6"
+            className="w-full bg-gray-900 hover:bg-gray-800 disabled:bg-gray-300 disabled:cursor-not-allowed text-white font-bold py-4 rounded-xl transition-all shadow-lg active:scale-[0.97] text-sm mt-6"
           >
             {loading ? 'Validation du tampon...' : 'Enregistrer ma visite ✓'}
           </button>
